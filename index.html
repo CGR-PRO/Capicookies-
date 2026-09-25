@@ -1173,6 +1173,43 @@ input { font: inherit; }
 .done h3 { font-size: 1.5rem; }
 .done p { color: var(--ink-soft); max-width: 32ch; }
 
+/* taxa de entrega */
+.fee-box {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  background: var(--beige);
+  font-size: .9rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  transition: background-color .2s, border-color .2s;
+}
+.fee-box strong { color: var(--choco); }
+.fee-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.fee-amount { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; color: var(--choco); font-variant-numeric: tabular-nums; }
+.fee-box[data-state="ok"] { background: var(--paper); border-color: var(--caramel-soft); }
+.fee-box[data-state="warn"] { background: var(--rose-soft); color: var(--choco); }
+.fee-box[data-state="out"] { background: var(--rose-soft); border-color: var(--terracotta); color: var(--choco); }
+.fee-box.is-flagged { box-shadow: 0 0 0 4px rgba(180, 85, 58, .2); }
+.fee-box .text-link { justify-self: start; }
+.fee-box button.text-link { padding: 0; border: 0; background: none; font: inherit; font-weight: 600; text-decoration: underline; }
+.fee-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  border: 2px solid var(--line);
+  border-top-color: var(--caramel-deep);
+  border-radius: 50%;
+  animation: fee-spin .8s linear infinite;
+}
+@keyframes fee-spin { to { transform: rotate(360deg); } }
+.summary-lines .summary-total span { color: var(--choco); font-weight: 800; }
+.btn:disabled { opacity: .7; cursor: wait; transform: none; box-shadow: none; }
+
 /* toast */
 .toast {
   position: fixed;
@@ -1853,6 +1890,7 @@ input { font: inherit; }
             <label for="f-ref">Referência <span class="opt">opcional</span></label>
             <input id="f-ref" name="reference" placeholder="Ex.: portão verde, perto da padaria">
           </div>
+          <div class="fee-box" data-fee-box data-state="idle" role="status" aria-live="polite"></div>
         </fieldset>
 
         <fieldset class="field-group">
@@ -1871,6 +1909,10 @@ input { font: inherit; }
         </fieldset>
       </form>
       <div class="drawer-foot">
+        <dl class="totals">
+          <div><dt>Taxa de entrega</dt><dd data-details-fee>R$ 0,00</dd></div>
+          <div class="total"><dt>Total</dt><dd data-details-total>R$ 0,00</dd></div>
+        </dl>
         <div class="foot-actions">
           <button class="btn btn-ghost" type="button" data-go="cart">Voltar</button>
           <button class="btn btn-choco" type="submit" form="checkout-form">Ver resumo</button>
@@ -1882,7 +1924,7 @@ input { font: inherit; }
     <section class="drawer-view" data-view="review" hidden>
       <div class="drawer-body" data-summary></div>
       <div class="drawer-foot">
-        <dl class="totals"><div class="total"><dt>Total</dt><dd data-cart-total>R$ 0,00</dd></div></dl>
+        <dl class="totals"><div class="total"><dt>Total</dt><dd data-review-total>R$ 0,00</dd></div></dl>
         <a class="btn btn-whats btn-block" data-send href="#" target="_blank" rel="noopener">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whats"/></svg>
           Enviar pedido pelo WhatsApp
@@ -1943,6 +1985,16 @@ const PRODUCT_IMAGES = {
 /* WhatsApp: somente números, com DDI 55 + DDD. Único lugar do número. */
 const WHATSAPP_NUMBER = "5511978947920";
 
+/* --------------------------------------------------------------------------
+   CHAVE DE API DE MAPAS (OPCIONAL)
+   O cálculo da taxa de entrega já funciona SEM chave, usando os serviços
+   gratuitos do OpenStreetMap (Nominatim para o endereço e OSRM para a rota).
+   Se quiser um serviço com mais garantia, crie uma chave gratuita em
+   https://openrouteservice.org/dev/#/signup e cole entre as aspas abaixo.
+   Com a chave preenchida, o site passa a usar o OpenRouteService.
+   -------------------------------------------------------------------------- */
+const OPENROUTESERVICE_API_KEY = "";
+
 window.CAPI_CONFIG = {
   brand: "Capicookies",
 
@@ -1960,8 +2012,33 @@ window.CAPI_CONFIG = {
     address: "Endereço combinado pelo WhatsApp",
   },
 
-  /* Texto sobre a taxa de entrega (a taxa é combinada na conversa) */
-  deliveryNote: "Taxa de entrega combinada pelo WhatsApp.",
+  /* Aviso no carrinho sobre a taxa de entrega */
+  deliveryNote: "Taxa de entrega calculada pela distância no próximo passo.",
+
+  /* ------------------------------------------------------------------------
+     ENTREGA: taxa calculada pela distância de rota (pelas ruas)
+     - origin: de onde saem as entregas. lat/lng vêm do CEP 02807-020.
+       Para ficar exato: no Google Maps, clique com o botão direito na porta
+       da Capicookies, copie os dois números e cole em lat e lng.
+     - tiers: faixas de preço. "upToKm" inclui o limite (2 km = R$ 5,00).
+       Acima da última faixa, o endereço fica fora da área de entrega.
+     ------------------------------------------------------------------------ */
+  delivery: {
+    origin: {
+      address: "Rua José de Sá Accioly, 325 — Jardim Maristela, São Paulo/SP, 02807-020",
+      lat: -23.4788,
+      lng: -46.70129,
+    },
+    tiers: [
+      { upToKm: 2, fee: 5 },
+      { upToKm: 4, fee: 7 },
+      { upToKm: 6, fee: 10 },
+      { upToKm: 8, fee: 13 },
+      { upToKm: 10, fee: 16 },
+    ],
+    outOfAreaMessage: "Esse endereço está fora da nossa área de entrega. Entre em contato pelo WhatsApp para consultar a disponibilidade.",
+    debounceMs: 900, // espera o cliente parar de digitar antes de calcular
+  },
 
   /* Busca automática de endereço pelo CEP (ViaCEP). false para desligar. */
   cepLookup: true,
@@ -2520,8 +2597,240 @@ window.CAPI_CONFIG = {
       if (data.localidade && !f.city.value) f.city.value = data.localidade;
       if (data.uf && !f.state.value) f.state.value = data.uf;
       ["street", "district", "city", "state"].forEach((n) => form.elements[n].value && setError(n, ""));
+      Delivery.schedule();
       if (!f.number.value) f.number.focus();
     } catch (e) { /* sem internet ou bloqueado: o cliente preenche à mão */ }
+  }
+
+  /* ---------- taxa de entrega por distância ----------
+     1) transforma o endereço do cliente em coordenadas (geocodificação);
+     2) calcula a distância da ROTA pelas ruas a partir da Capicookies;
+     3) aplica as faixas de CONFIG.delivery.tiers.
+     Sem chave: OpenStreetMap (Nominatim + OSRM). Com OPENROUTESERVICE_API_KEY
+     preenchida: OpenRouteService. */
+  const DELIVERY = CONFIG.delivery;
+  const UF_NAMES = {
+    AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará", DF: "Distrito Federal",
+    ES: "Espírito Santo", GO: "Goiás", MA: "Maranhão", MT: "Mato Grosso", MS: "Mato Grosso do Sul",
+    MG: "Minas Gerais", PA: "Pará", PB: "Paraíba", PR: "Paraná", PE: "Pernambuco", PI: "Piauí",
+    RJ: "Rio de Janeiro", RN: "Rio Grande do Norte", RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima",
+    SC: "Santa Catarina", SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
+  };
+  const fmtKm = (km) => `${km.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
+
+  const Delivery = (() => {
+    const cache = new Map(); // endereço → km (ou null quando não achado no mapa)
+    const waiters = [];
+    let state = { status: "incomplete" };
+    let timer = null;
+    let seq = 0;
+    let lastNominatim = 0;
+
+    const val = (n) => (form.elements[n].value || "").trim();
+    const address = () => ({
+      cep: U.digits(val("cep")),
+      street: val("street"),
+      number: val("number"),
+      district: val("district"),
+      city: val("city"),
+      state: val("state").toUpperCase(),
+    });
+    const isComplete = (a) => a.cep.length === 8 && a.street && a.number && a.district && a.city && a.state.length === 2;
+    const keyOf = (a) => [a.cep, a.street, a.number, a.district, a.city, a.state].join("|").toLowerCase();
+
+    function feeFor(km) {
+      const tier = DELIVERY.tiers.find((t) => km <= t.upToKm);
+      return tier ? tier.fee : null; // null = fora da área
+    }
+
+    async function getJSON(url) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 12000);
+      try {
+        const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } finally {
+        clearTimeout(t);
+      }
+    }
+
+    /* Nominatim aceita no máximo 1 consulta por segundo */
+    async function nominatim(params) {
+      const wait = lastNominatim + 1100 - Date.now();
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      lastNominatim = Date.now();
+      const qs = new URLSearchParams({ format: "jsonv2", limit: "1", countrycodes: "br", "accept-language": "pt-BR", ...params });
+      const data = await getJSON(`https://nominatim.openstreetmap.org/search?${qs}`);
+      return data && data[0] ? { lat: Number(data[0].lat), lng: Number(data[0].lon) } : null;
+    }
+
+    async function geocode(a) {
+      const stateName = UF_NAMES[a.state] || a.state;
+      if (OPENROUTESERVICE_API_KEY) {
+        const qs = new URLSearchParams({
+          api_key: OPENROUTESERVICE_API_KEY,
+          text: `${a.street}, ${a.number}, ${a.district}, ${a.city}, ${stateName}, Brasil`,
+          "boundary.country": "BR",
+          "focus.point.lat": DELIVERY.origin.lat,
+          "focus.point.lon": DELIVERY.origin.lng,
+          size: "1",
+        });
+        const data = await getJSON(`https://api.openrouteservice.org/geocode/search?${qs}`);
+        const f = data && data.features && data.features[0];
+        return f ? { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] } : null;
+      }
+      // do mais preciso (com número) para o mais amplo
+      const attempts = [
+        { street: `${a.number} ${a.street}`, city: a.city, state: stateName, country: "Brasil" },
+        { street: a.street, city: a.city, state: stateName, country: "Brasil" },
+        { q: `${a.street}, ${a.district}, ${a.city}, ${stateName}, Brasil` },
+      ];
+      for (const params of attempts) {
+        const hit = await nominatim(params);
+        if (hit) return hit;
+      }
+      return null;
+    }
+
+    async function routeKm(dest) {
+      const o = DELIVERY.origin;
+      if (OPENROUTESERVICE_API_KEY) {
+        const qs = new URLSearchParams({ api_key: OPENROUTESERVICE_API_KEY, start: `${o.lng},${o.lat}`, end: `${dest.lng},${dest.lat}` });
+        const data = await getJSON(`https://api.openrouteservice.org/v2/directions/driving-car?${qs}`);
+        const summary = data.features[0].properties.summary || {};
+        return (summary.distance || 0) / 1000;
+      }
+      const data = await getJSON(`https://router.project-osrm.org/route/v1/driving/${o.lng},${o.lat};${dest.lng},${dest.lat}?overview=false`);
+      if (data.code !== "Ok" || !data.routes || !data.routes[0]) throw new Error("rota indisponível");
+      return data.routes[0].distance / 1000;
+    }
+
+    function set(next) {
+      state = next;
+      render();
+      updateTotals();
+      if (next.status !== "loading") waiters.splice(0).forEach((resolve) => resolve(state));
+    }
+
+    async function calculate(a, key) {
+      const id = ++seq;
+      state.running = true;
+      let next;
+      try {
+        let km = cache.get(key);
+        if (km === undefined) {
+          const dest = await geocode(a);
+          km = dest ? await routeKm(dest) : null;
+          cache.set(key, km);
+        }
+        if (km === null) next = { status: "notfound", key };
+        else {
+          const fee = feeFor(km);
+          next = fee === null ? { status: "out", key, km } : { status: "ok", key, km, fee };
+        }
+      } catch (err) {
+        next = { status: "error", key };
+      }
+      if (id !== seq) return; // o endereço mudou durante o cálculo: vale o mais novo
+      set(next);
+    }
+
+    /* agenda o cálculo; com atraso enquanto o cliente digita */
+    function schedule(delay = DELIVERY.debounceMs) {
+      clearTimeout(timer);
+      if (fulfillment() !== "delivery") return;
+      const a = address();
+      if (!isComplete(a)) {
+        seq++;
+        if (state.status !== "incomplete") set({ status: "incomplete" });
+        return;
+      }
+      const key = keyOf(a);
+      const settled = ["ok", "out", "notfound"].includes(state.status);
+      if (state.key === key && (settled || (state.status === "loading" && state.running))) return;
+      if (state.key !== key || state.status !== "loading") set({ status: "loading", key });
+      timer = setTimeout(() => calculate(a, key), delay);
+    }
+
+    /* espera o resultado (usado ao tocar em "Ver resumo") */
+    function ensure() {
+      return new Promise((resolve) => {
+        if (fulfillment() !== "delivery") return resolve(state);
+        schedule(0);
+        if (state.status !== "loading") return resolve(state);
+        waiters.push(resolve);
+      });
+    }
+
+    function reset() {
+      clearTimeout(timer);
+      seq++;
+      set({ status: "incomplete" });
+    }
+
+    function quote() {
+      if (fulfillment() !== "delivery") return { status: "pickup", fee: 0 };
+      if (state.status === "ok") return { status: "ok", fee: state.fee, km: state.km };
+      return { status: state.status, fee: null };
+    }
+
+    function consultUrl() {
+      const a = address();
+      const text = `Olá, Capicookies! Vocês entregam no endereço ${a.street}, ${a.number} — ${a.district}, ${a.city}/${a.state}, CEP ${U.maskCep(a.cep)}?`;
+      return U.whatsappUrl(CONFIG.contact.whatsapp, text);
+    }
+
+    function render() {
+      const box = $("[data-fee-box]", form);
+      if (!box) return;
+      const s = state;
+      const look = { incomplete: "idle", loading: "loading", ok: "ok", out: "out", notfound: "warn", error: "warn" };
+      box.dataset.state = look[s.status] || "idle";
+      box.classList.remove("is-flagged");
+      if (s.status === "loading") {
+        box.innerHTML = `<span><i class="fee-spinner" aria-hidden="true"></i>Calculando a distância até você…</span>`;
+      } else if (s.status === "ok") {
+        box.innerHTML = `<div class="fee-line"><strong>Taxa de entrega</strong><span class="fee-amount">${money(s.fee)}</span></div>
+          <span>Distância aproximada: ${fmtKm(s.km)} da Capicookies</span>`;
+      } else if (s.status === "out") {
+        box.innerHTML = `<strong>${escape(DELIVERY.outOfAreaMessage)}</strong>
+          <a class="text-link" href="${consultUrl()}" target="_blank" rel="noopener">Consultar pelo WhatsApp</a>`;
+      } else if (s.status === "notfound") {
+        box.innerHTML = `<span><strong>Não encontramos esse endereço no mapa.</strong> Confira rua, número, bairro e cidade. Se estiver tudo certo, pode continuar: a taxa de entrega será combinada pelo WhatsApp.</span>`;
+      } else if (s.status === "error") {
+        box.innerHTML = `<span><strong>Não foi possível calcular a taxa agora.</strong> Pode continuar: a taxa de entrega será combinada pelo WhatsApp.</span>
+          <button type="button" class="text-link" data-fee-retry>Tentar calcular de novo</button>`;
+      } else {
+        box.innerHTML = `<span>Preencha o endereço completo para calcularmos a taxa de entrega.</span>`;
+      }
+    }
+
+    function flag() {
+      const box = $("[data-fee-box]", form);
+      if (!box) return;
+      box.classList.add("is-flagged");
+      box.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    const getState = () => state;
+    return { schedule, ensure, reset, quote, flag, render, getState };
+  })();
+
+  function totalText(subtotal, q) {
+    return q.fee === null ? `${money(subtotal)} + entrega` : money(subtotal + q.fee);
+  }
+
+  /* totais da etapa "Seus dados": mudam junto com a taxa */
+  function updateTotals() {
+    const feeEl = $("[data-details-fee]", drawer);
+    const totalEl = $("[data-details-total]", drawer);
+    if (!feeEl || !totalEl) return;
+    const { subtotal } = Cart.snapshot();
+    const q = Delivery.quote();
+    const labels = { loading: "calculando…", incomplete: "—", out: "fora da área", notfound: "a combinar", error: "a combinar" };
+    feeEl.textContent = q.fee === null ? labels[q.status] || "a combinar" : money(q.fee);
+    totalEl.textContent = q.status === "out" ? "—" : totalText(subtotal, q);
   }
 
   /* ---------- resumo e mensagem ---------- */
@@ -2543,14 +2852,18 @@ window.CAPI_CONFIG = {
     const items = state.lines
       .map((l) => `<li><span>${l.qty}× ${escape(l.name)}</span><span>${money(l.lineTotal)}</span></li>`)
       .join("");
+    const q = o.quote || { status: "pickup", fee: 0 };
+    const feeText = q.fee === null ? "a combinar" : money(q.fee);
 
     $("[data-summary]", drawer).innerHTML = `
       <div class="summary-block">
         <div class="summary-head"><h3>Cookies</h3><button type="button" data-go="cart">Alterar</button></div>
         <ul class="summary-lines">${items}
           <li><span>Subtotal</span><span>${money(state.subtotal)}</span></li>
+          <li><span>Taxa de entrega${q.km ? ` (${fmtKm(q.km)})` : ""}</span><span>${feeText}</span></li>
+          <li class="summary-total"><span>Total</span><span>${totalText(state.subtotal, q)}</span></li>
         </ul>
-        ${isDelivery ? `<p class="fine">${escape(CONFIG.deliveryNote)}</p>` : ""}
+        ${isDelivery && q.fee === null ? `<p class="fine">A taxa de entrega será combinada pelo WhatsApp.</p>` : ""}
       </div>
       <div class="summary-block">
         <div class="summary-head"><h3>Você</h3><button type="button" data-go="details">Alterar</button></div>
@@ -2564,6 +2877,9 @@ window.CAPI_CONFIG = {
         <div class="summary-head"><h3>Pagamento</h3><button type="button" data-go="details">Alterar</button></div>
         <p>${escape(paymentLabel(o))} · pago ${isDelivery ? "na entrega" : "na retirada"}</p>
       </div>`;
+
+    const reviewTotal = $("[data-review-total]", drawer);
+    if (reviewTotal) reviewTotal.textContent = totalText(state.subtotal, q);
 
     const url = U.whatsappUrl(CONFIG.contact.whatsapp, buildMessage(o, state));
     $("[data-send]", drawer).href = url;
@@ -2579,8 +2895,16 @@ window.CAPI_CONFIG = {
     state.lines.forEach((l) => out.push(`• ${l.qty}x ${l.name} — ${money(l.price)} cada = ${money(l.lineTotal)}`));
     out.push("");
     out.push(`Subtotal: ${money(state.subtotal)}`);
-    out.push(`*Total: ${money(state.total)}*`);
-    if (isDelivery) out.push(`_${CONFIG.deliveryNote}_`);
+    const q = o.quote || { status: "pickup", fee: 0 };
+    if (isDelivery && q.fee === null) {
+      out.push("Taxa de entrega: a combinar");
+      out.push(`*Total: ${money(state.subtotal)} + taxa de entrega*`);
+    } else if (isDelivery) {
+      out.push(`Taxa de entrega: ${money(q.fee)} (${fmtKm(q.km)})`);
+      out.push(`*Total: ${money(state.subtotal + q.fee)}*`);
+    } else {
+      out.push(`*Total: ${money(state.total)}*`);
+    }
     out.push("");
     out.push("*CLIENTE*");
     out.push(`Nome: ${o.name}`);
@@ -2617,8 +2941,10 @@ window.CAPI_CONFIG = {
         const target = t.dataset.go;
         if (target === "details") { restoreIfEmpty(); syncConditionalFields(); }
         show(target);
+        if (target === "details") { Delivery.schedule(0); updateTotals(); }
         return;
       }
+      if (t.matches("[data-fee-retry]")) { Delivery.schedule(0); return; }
       if (t.matches("[data-continue]")) {
         close();
         const menu = $("#cardapio");
@@ -2628,6 +2954,7 @@ window.CAPI_CONFIG = {
       if (t.matches("[data-send]")) {
         // o link abre o WhatsApp numa nova aba; aqui só limpamos o carrinho
         if (!order || Cart.snapshot().count === 0) { e.preventDefault(); return; }
+        if (order.fulfillment === "delivery" && order.quote && order.quote.status === "out") { e.preventDefault(); return; }
         setTimeout(() => {
           Cart.clear();
           order = null;
@@ -2648,6 +2975,11 @@ window.CAPI_CONFIG = {
         syncConditionalFields();
         if (e.target.name === "payment") setError("payment", "");
       }
+      if (e.target.name === "fulfillment") {
+        if (fulfillment() === "delivery") Delivery.schedule(0);
+        else Delivery.reset();
+        updateTotals();
+      }
     });
 
     form.addEventListener("input", (e) => {
@@ -2660,12 +2992,26 @@ window.CAPI_CONFIG = {
       }
       if (el.name === "state") el.value = el.value.replace(/[^a-z]/gi, "").toUpperCase();
       if (el.closest(".field.is-invalid")) setError(el.name, "");
+      if (["cep", "street", "number", "district", "city", "state"].includes(el.name)) Delivery.schedule();
     });
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = validate();
       if (!data) return;
+      if (data.fulfillment === "delivery") {
+        const btn = $('button[form="checkout-form"]');
+        const label = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Calculando…";
+        const result = await Delivery.ensure();
+        btn.disabled = false;
+        btn.textContent = label;
+        if (result.status === "out" || result.status === "incomplete") { Delivery.flag(); return; }
+        data.quote = Delivery.quote();
+      } else {
+        data.quote = { status: "pickup", fee: 0 };
+      }
       order = data;
       rememberCustomer(data);
       renderSummary(data);
@@ -2676,6 +3022,7 @@ window.CAPI_CONFIG = {
     Cart.subscribe((state) => {
       if (state.count === 0 && (current === "details" || current === "review")) show("cart");
       else if (current === "review" && order) renderSummary(order);
+      updateTotals();
     });
   }
 
@@ -2702,6 +3049,8 @@ window.CAPI_CONFIG = {
 
   bind();
   syncConditionalFields();
+  Delivery.render();
+  updateTotals();
 
   window.CapiUI = Object.assign(window.CapiUI || {}, { openCart: open, closeCart: close, updateOrderBar });
 })();
