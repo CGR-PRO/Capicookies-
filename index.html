@@ -422,6 +422,53 @@ html.lock,html.lock body{overflow:hidden}
   .d-foot{padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))}
   .toast{top:auto;bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 }
+
+/* ---------- recebimento, dados e pagamento ---------- */
+.ck{margin-top:22px;display:flex;flex-direction:column;gap:22px}
+.ck-block{display:flex;flex-direction:column;gap:12px}
+.ck-title{font-family:var(--f-display);font-weight:600;font-size:1.2rem;line-height:1.2;color:var(--choco)}
+.ck-req{font-size:.8rem;color:var(--muted)}
+.ck-req b,.field .req{color:#A0402C}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.three{grid-template-columns:repeat(3,1fr)}
+.opt{position:relative;cursor:pointer;display:block}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:flex;flex-direction:column;align-items:flex-start;gap:6px;height:100%;padding:14px;border-radius:16px;border:1.5px solid var(--sand);background:var(--paper);
+  transition:border-color .2s,background-color .2s,box-shadow .2s,transform .2s var(--ease)}
+.opt span svg{width:30px;height:30px;color:var(--choco)}
+.opt b{font-size:.95rem;line-height:1.25;color:var(--choco)}
+.opt small{font-size:.78rem;color:var(--muted);line-height:1.35}
+.opts.three .opt span{align-items:center;justify-content:center;text-align:center;padding:14px 8px}
+.opt:hover span{border-color:var(--caramel)}
+.opt input:checked+span{border-color:var(--choco);background:#fff;box-shadow:inset 0 0 0 1px var(--choco),0 10px 22px -16px rgba(59,36,24,.6)}
+.opt input:checked+span::after{content:"";position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--choco) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23FFF4E6' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.opts.three .opt input:checked+span::after{top:6px;right:6px;width:16px;height:16px;background-size:11px}
+.opt input:focus-visible+span{outline:3px solid var(--caramel);outline-offset:2px}
+.opts.has-error .opt span{border-color:#D08A7A;background:#FFF8F5}
+.ck-info{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--beige);font-size:.92rem;font-weight:600;color:var(--coffee)}
+.ck-info svg{width:20px;height:20px;flex:none;color:var(--caramel-d)}
+.fields{display:flex;flex-direction:column;gap:14px}
+.addr{padding:16px;border-radius:18px;background:var(--beige)}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row-uf{display:grid;grid-template-columns:1fr 96px;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-weight:700;font-size:.88rem;color:var(--choco)}
+.field label i{font-style:normal;font-weight:500;color:var(--muted)}
+.field input,.field select{width:100%;min-width:0;min-height:50px;padding:12px 14px;border-radius:14px;border:1.5px solid var(--sand);background:var(--paper);color:var(--ink);
+  font:500 1rem/1.3 var(--f-body);transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.field select{padding-right:34px;background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5' fill='none' stroke='%233B2418' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 10px center/18px no-repeat}
+.field input::placeholder{color:#B5A193}
+.field input:focus,.field select:focus{outline:none;border-color:var(--caramel);box-shadow:0 0 0 4px rgba(200,134,74,.18)}
+.field .err,.opts-err{color:#A0402C;font-size:.82rem;font-weight:600}
+.field .err:empty,.opts-err:empty{display:none}
+.field.has-error input,.field.has-error select{border-color:#C9604B;background-color:#FFF8F5}
+.d-err{background:var(--rose-soft);color:#7A3526;border-radius:14px;padding:10px 14px;font-size:.88rem;font-weight:700}
+.d-err:empty{display:none}
+@media (max-width:420px){
+  .opts.three{gap:8px}
+  .opts.three .opt b{font-size:.88rem}
+  .row-2{grid-template-columns:1fr}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
@@ -484,6 +531,9 @@ html.lock,html.lock body{overflow:hidden}
     <symbol id="s-bag" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22h40l-3 32a3 3 0 0 1-3 2.8H18a3 3 0 0 1-3-2.8z" fill="#F7E1C4"/><path d="M23 22v-4a9 9 0 0 1 18 0v4"/><circle cx="32" cy="39" r="9" fill="#E8B87C"/></g><g fill="#3B2418"><circle cx="29" cy="36" r="1.7"/><circle cx="35" cy="38" r="1.5"/><circle cx="31" cy="43" r="1.6"/></g><path d="M50 10l1.3 3 3.2.4-2.4 2.2.6 3.2-2.7-1.6-2.8 1.6.6-3.2-2.4-2.2 3.2-.4z" fill="#C8864A"/></symbol>
     <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.5h14l-1.1 11a1.8 1.8 0 0 1-1.8 1.6H7.9a1.8 1.8 0 0 1-1.8-1.6z"/><path d="M8.8 8.5V7a3.2 3.2 0 0 1 6.4 0v1.5"/></g></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V5.2c0-.7.5-1.2 1.2-1.2h2.6c.7 0 1.2.5 1.2 1.2V7M6.5 7l.8 12a1.8 1.8 0 0 0 1.8 1.6h5.8a1.8 1.8 0 0 0 1.8-1.6l.8-12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5 5.5 4h13L20 9.5"/><path d="M4 9.5c0 1.4 1.1 2.5 2.7 2.5s2.6-1.1 2.6-2.5c0 1.4 1.1 2.5 2.7 2.5s2.7-1.1 2.7-2.5c0 1.4 1 2.5 2.6 2.5S20 10.9 20 9.5"/><path d="M5.5 12v8h13v-8M10 20v-5h4v5"/></g></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h11v10h-11zM13.5 10h4l3 3.5v3h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></g></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></g></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
@@ -851,7 +901,7 @@ html.lock,html.lock body{overflow:hidden}
 /* ============ CONFIGURAÇÃO ============
    Número do WhatsApp da loja: DDI 55 + DDD + número, só dígitos.
    É o ÚNICO lugar para trocar: todos os botões usam este valor. */
-const WHATSAPP_NUMBER = "5511978947920";
+const WHATSAPP_NUMBER = "5511900000000";
 
 const MSG_SIMPLES = 'Olá! Vim pelo site da Capicookies e gostaria de fazer um pedido. 🍪';
 const PRODUTOS = {
@@ -930,9 +980,65 @@ const cartLines = () => Object.entries(cart).map(([id, q]) => ({ id, q, p: PRODU
 const cartCount = () => cartLines().reduce((s, l) => s + l.q, 0);
 const cartTotal = () => cartLines().reduce((s, l) => s + l.sub, 0);
 
+/* ---------- dados do pedido (recebimento, contato, endereço, pagamento) ---------- */
+const CK_KEY = 'capicookies_dados';
+const CK_VAZIO = { tipo: '', nome: '', tel: '', cep: '', rua: '', numero: '', complemento: '', bairro: '', cidade: '', uf: '', ref: '', pagamento: '' };
+let ck = { ...CK_VAZIO };
+try { ck = { ...CK_VAZIO, ...(JSON.parse(localStorage.getItem(CK_KEY) || '{}') || {}) }; } catch { ck = { ...CK_VAZIO }; }
+let ckErrors = {};
+const saveCk = () => { try { localStorage.setItem(CK_KEY, JSON.stringify(ck)); } catch { /* sem armazenamento */ } };
+const soDigitos = v => String(v || '').replace(/\D/g, '');
+const PAGAMENTOS = { dinheiro: 'DINHEIRO', pix: 'PIX', cartao: 'CARTÃO' };
+const UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+const CAMPO_NOME = { tipo: 'forma de recebimento', nome: 'nome completo', tel: 'telefone', cep: 'CEP', rua: 'rua', numero: 'número', bairro: 'bairro', cidade: 'cidade', uf: 'estado', pagamento: 'forma de pagamento' };
+
+function mascaraTel(v) {
+  const d = soDigitos(v).slice(0, 11);
+  if (d.length <= 2) return d ? `(${d}` : '';
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+function mascaraCep(v) { const d = soDigitos(v).slice(0, 8); return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d; }
+
+function validarPedido() {
+  const e = {};
+  if (!ck.tipo) e.tipo = 'Escolha como você vai receber o pedido.';
+  if (ck.nome.trim().length < 3) e.nome = 'Informe seu nome completo.';
+  const t = soDigitos(ck.tel);
+  if (t.length < 10 || t.length > 11) e.tel = 'Informe um telefone com DDD, ex.: (11) 99999-9999.';
+  if (ck.tipo === 'entrega') {
+    if (soDigitos(ck.cep).length !== 8) e.cep = 'Informe o CEP com 8 números.';
+    if (!ck.rua.trim()) e.rua = 'Informe a rua.';
+    if (!ck.numero.trim()) e.numero = 'Informe o número.';
+    if (!ck.bairro.trim()) e.bairro = 'Informe o bairro.';
+    if (!ck.cidade.trim()) e.cidade = 'Informe a cidade.';
+    if (!ck.uf) e.uf = 'Escolha o estado.';
+  }
+  if (!ck.pagamento) e.pagamento = 'Escolha como você vai pagar.';
+  return e;
+}
+
 function orderMessage() {
-  const itens = cartLines().map(l => `• ${l.q}x ${l.p.nome} — ${brl(l.sub)}`).join('\n');
-  return `🍪 *PEDIDO — CAPICOOKIES*\n\nOlá! Gostaria de fazer um pedido:\n\n${itens}\n\n━━━━━━━━━━━━\n\n*Total: ${brl(cartTotal())}*\n\nGostaria de confirmar a disponibilidade. 😊`;
+  const itens = cartLines().map(l => `${l.q}x ${l.p.nome} — ${brl(l.sub)}`).join('\n');
+  let m = `*NOVO PEDIDO — CAPICOOKIES*\n\nItens:\n${itens}\n\n*Total: ${brl(cartTotal())}*`;
+  if (ck.tipo) m += `\n\nRecebimento: ${ck.tipo === 'entrega' ? 'ENTREGA' : 'RETIRADA NA LOJA'}`;
+  const contato = [];
+  if (ck.nome.trim()) contato.push(`Nome: ${ck.nome.trim()}`);
+  if (soDigitos(ck.tel)) contato.push(`Telefone: ${mascaraTel(ck.tel)}`);
+  if (contato.length) m += `\n\n${contato.join('\n')}`;
+  if (ck.tipo === 'entrega') {
+    const end = [];
+    if (ck.rua.trim() || ck.numero.trim()) end.push([ck.rua.trim(), ck.numero.trim()].filter(Boolean).join(', '));
+    if (ck.complemento.trim()) end.push(`Complemento: ${ck.complemento.trim()}`);
+    if (ck.bairro.trim()) end.push(`Bairro: ${ck.bairro.trim()}`);
+    if (ck.cidade.trim() || ck.uf) end.push(`Cidade: ${[ck.cidade.trim(), ck.uf].filter(Boolean).join(' - ')}`);
+    if (soDigitos(ck.cep)) end.push(`CEP: ${mascaraCep(ck.cep)}`);
+    if (ck.ref.trim()) end.push(`Referência: ${ck.ref.trim()}`);
+    if (end.length) m += `\n\nEndereço:\n${end.join('\n')}`;
+  }
+  if (ck.pagamento) m += `\n\nPagamento: ${PAGAMENTOS[ck.pagamento]}`;
+  return m;
 }
 
 function saveCart() {
@@ -997,6 +1103,7 @@ function openCart() {
   hideToast();
   lastFocus = document.activeElement;
   cartOpen = true;
+  ckErrors = {};
   drawer.dataset.view = 'cart';
   renderCart();
   drawer.removeAttribute('inert');
@@ -1023,6 +1130,81 @@ const thumbs = {};
 function thumb(id) {
   if (!thumbs[id]) { const p = PRODUTOS[id]; thumbs[id] = cookieSVG({ seed: p.seed, variant: p.ilustracao, kind: 'cookie', bg: null }); }
   return thumbs[id];
+}
+
+const escHtml = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function campo(k, label, attrs, obrigatorio = true) {
+  const val = k === 'tel' ? mascaraTel(ck[k]) : k === 'cep' ? mascaraCep(ck[k]) : ck[k];
+  return `
+    <div class="field${ckErrors[k] ? ' has-error' : ''}">
+      <label for="ck-${k}">${label}${obrigatorio ? ' <span class="req" aria-hidden="true">*</span>' : ' <i>(opcional)</i>'}</label>
+      <input id="ck-${k}" data-ck="${k}" value="${escHtml(val)}" ${attrs} ${obrigatorio ? 'required aria-required="true"' : ''} aria-invalid="${ckErrors[k] ? 'true' : 'false'}" aria-describedby="ck-e-${k}">
+      <small class="err" id="ck-e-${k}">${escHtml(ckErrors[k] || '')}</small>
+    </div>`;
+}
+function checkoutHtml() {
+  const entrega = ck.tipo === 'entrega';
+  return `
+    <form class="ck" id="ck-form" novalidate onsubmit="return false">
+      <fieldset class="ck-block" style="border:0;padding:0;margin:0">
+        <legend class="ck-title">Como você vai receber?</legend>
+        <div class="opts${ckErrors.tipo ? ' has-error' : ''}" id="ck-tipo">
+          <label class="opt"><input type="radio" name="ck-tipo" value="retirada" data-ck="tipo" ${ck.tipo === 'retirada' ? 'checked' : ''}>
+            <span><svg aria-hidden="true"><use href="#i-store"/></svg><b>Retirar na loja</b><small>Você busca com a gente</small></span></label>
+          <label class="opt"><input type="radio" name="ck-tipo" value="entrega" data-ck="tipo" ${entrega ? 'checked' : ''}>
+            <span><svg aria-hidden="true"><use href="#i-truck"/></svg><b>Receber por entrega</b><small>Levamos até você</small></span></label>
+        </div>
+        <small class="opts-err" id="ck-e-tipo" role="alert">${escHtml(ckErrors.tipo || '')}</small>
+      </fieldset>
+
+      ${ck.tipo ? `
+      <div class="ck-block">
+        ${ck.tipo === 'retirada' ? `<p class="ck-info"><svg aria-hidden="true"><use href="#i-store"/></svg>Você irá retirar seu pedido na loja.</p>` : ''}
+        <p class="ck-title">${entrega ? 'Dados para entrega' : 'Seus dados'}</p>
+        <p class="ck-req">Campos com <b>*</b> são obrigatórios.</p>
+        <div class="fields">
+          ${campo('nome', 'Nome completo', 'type="text" autocomplete="name" maxlength="80"')}
+          ${campo('tel', 'Telefone/WhatsApp', 'type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999"')}
+        </div>
+        ${entrega ? `
+        <div class="fields addr">
+          ${campo('cep', 'CEP', 'type="text" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"')}
+          ${campo('rua', 'Rua', 'type="text" autocomplete="address-line1" maxlength="120"')}
+          <div class="row-2">
+            ${campo('numero', 'Número', 'type="text" inputmode="numeric" maxlength="20"')}
+            ${campo('complemento', 'Complemento', 'type="text" autocomplete="address-line2" maxlength="80" placeholder="Casa, apto..."', false)}
+          </div>
+          ${campo('bairro', 'Bairro', 'type="text" maxlength="80"')}
+          <div class="row-uf">
+            ${campo('cidade', 'Cidade', 'type="text" autocomplete="address-level2" maxlength="80"')}
+            <div class="field${ckErrors.uf ? ' has-error' : ''}">
+              <label for="ck-uf">UF <span class="req" aria-hidden="true">*</span></label>
+              <select id="ck-uf" data-ck="uf" required aria-required="true" aria-invalid="${ckErrors.uf ? 'true' : 'false'}" aria-describedby="ck-e-uf" autocomplete="address-level1">
+                <option value="">—</option>${UFS.map(u => `<option${ck.uf === u ? ' selected' : ''}>${u}</option>`).join('')}
+              </select>
+              <small class="err" id="ck-e-uf">${escHtml(ckErrors.uf || '')}</small>
+            </div>
+          </div>
+          ${campo('ref', 'Ponto de referência', 'type="text" maxlength="120" placeholder="Ex.: próximo ao mercado"', false)}
+        </div>` : ''}
+      </div>` : ''}
+
+      <fieldset class="ck-block" style="border:0;padding:0;margin:0">
+        <legend class="ck-title">Como você vai pagar?</legend>
+        <div class="opts three${ckErrors.pagamento ? ' has-error' : ''}" id="ck-pagamento">
+          ${Object.entries({ dinheiro: 'Dinheiro', pix: 'Pix', cartao: 'Cartão' }).map(([v, t]) => `
+          <label class="opt"><input type="radio" name="ck-pag" value="${v}" data-ck="pagamento" ${ck.pagamento === v ? 'checked' : ''}><span><b>${t}</b></span></label>`).join('')}
+        </div>
+        <small class="opts-err" id="ck-e-pagamento" role="alert">${escHtml(ckErrors.pagamento || '')}</small>
+        <p class="ck-req">O pagamento é feito direto com a loja. Aqui você só informa como prefere pagar.</p>
+      </fieldset>
+    </form>`;
+}
+
+function atualizarLinkPedido() {
+  const a = dFoot.querySelector('[data-send-order]');
+  if (a) a.href = waUrl(orderMessage());
+  refreshWaLinks();
 }
 
 function renderCart() {
@@ -1055,11 +1237,13 @@ function renderCart() {
           </div>
         </li>`).join('')}
     </ul>
-    <p class="d-note"><svg aria-hidden="true"><use href="#i-heart"/></svg><span>O WhatsApp abre com a mensagem do pedido pronta. É só enviar e a gente confirma a disponibilidade, a retirada ou entrega e o pagamento por lá.</span></p>`;
+    <p class="d-note"><svg aria-hidden="true"><use href="#i-heart"/></svg><span>O WhatsApp abre com a mensagem do pedido pronta. É só enviar e a gente confirma a disponibilidade, a retirada ou entrega e o pagamento por lá.</span></p>
+    ${checkoutHtml()}`;
   dFoot.hidden = false;
   dFoot.innerHTML = `
     <div class="d-row sub"><span>Subtotal</span><b>${brl(cartTotal())}</b></div>
     <div class="d-row total"><span>Total</span><b>${brl(cartTotal())}</b></div>
+    <p class="d-err" id="d-err" role="alert"></p>
     <div class="d-actions">
       <button class="btn btn-line" type="button" data-keep-shopping>Continuar comprando</button>
       <a class="btn btn-wa" data-send-order href="${waUrl(orderMessage())}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Pedir pelo WhatsApp</a>
@@ -1108,7 +1292,18 @@ document.addEventListener('click', e => {
     }, 120);
     return;
   }
-  if (e.target.closest('[data-send-order]')) { orderSent(true); return; }
+  if (e.target.closest('[data-send-order]')) {
+    ckErrors = validarPedido();
+    if (Object.keys(ckErrors).length) {
+      e.preventDefault();
+      mostrarErros();
+      return;
+    }
+    atualizarLinkPedido();
+    e.target.closest('[data-send-order]').href = waUrl(orderMessage());
+    orderSent(true);
+    return;
+  }
   if (e.target.closest('a[data-sends-cart]')) { orderSent(false); return; }
 
   const line = e.target.closest('.line');
@@ -1126,6 +1321,68 @@ document.addEventListener('click', e => {
   }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeCart(); });
+
+function mostrarErros() {
+  const top = dBody.scrollTop;
+  renderCart();
+  dBody.scrollTop = top;
+  const faltando = Object.keys(ckErrors).map(k => CAMPO_NOME[k]).filter(Boolean);
+  const box = document.getElementById('d-err');
+  if (box) box.textContent = `Falta preencher: ${faltando.join(', ')}.`;
+  const primeiro = Object.keys(ckErrors)[0];
+  const alvo = document.getElementById('ck-' + primeiro) || dBody.querySelector(`#ck-${primeiro} input`);
+  if (alvo) {
+    alvo.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    setTimeout(() => alvo.focus({ preventScroll: true }), 350);
+  }
+}
+
+function limparErro(k) {
+  if (!ckErrors[k]) return;
+  delete ckErrors[k];
+  const el = document.getElementById('ck-e-' + k);
+  if (el) el.textContent = '';
+  const campoEl = dBody.querySelector(`[data-ck="${k}"]`);
+  campoEl?.closest('.field')?.classList.remove('has-error');
+  campoEl?.closest('.opts')?.classList.remove('has-error');
+  campoEl?.setAttribute('aria-invalid', 'false');
+  const box = document.getElementById('d-err');
+  if (box) {
+    const faltando = Object.keys(ckErrors).map(x => CAMPO_NOME[x]).filter(Boolean);
+    box.textContent = faltando.length ? `Falta preencher: ${faltando.join(', ')}.` : '';
+  }
+}
+
+dBody.addEventListener('input', e => {
+  const el = e.target.closest('[data-ck]');
+  if (!el || el.type === 'radio') return;
+  const k = el.dataset.ck;
+  if (k === 'tel') el.value = mascaraTel(el.value);
+  if (k === 'cep') el.value = mascaraCep(el.value);
+  ck[k] = el.value;
+  saveCk();
+  limparErro(k);
+  atualizarLinkPedido();
+});
+dBody.addEventListener('change', e => {
+  const el = e.target.closest('[data-ck]');
+  if (!el) return;
+  const k = el.dataset.ck;
+  ck[k] = el.value;
+  saveCk();
+  limparErro(k);
+  if (k === 'tipo') {
+    /* Os dados de endereço ficam guardados, mas só entram na mensagem se for entrega. */
+    if (ck.tipo === 'retirada') ['cep', 'rua', 'numero', 'bairro', 'cidade', 'uf'].forEach(x => delete ckErrors[x]);
+    const top = dBody.scrollTop;
+    renderCart();
+    dBody.scrollTop = top;
+    const box = document.getElementById('d-err');
+    const faltando = Object.keys(ckErrors).map(x => CAMPO_NOME[x]).filter(Boolean);
+    if (box && faltando.length) box.textContent = `Falta preencher: ${faltando.join(', ')}.`;
+  }
+  atualizarLinkPedido();
+});
 /* Mantém o carrinho igual entre abas abertas do site. */
 window.addEventListener('storage', e => {
   if (e.key !== CART_KEY) return;
