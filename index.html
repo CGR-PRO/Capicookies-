@@ -810,6 +810,46 @@ html.lock,html.lock body{overflow:hidden}
 @media (max-width:360px){
   .testi,#pedir,.footer{border-radius:24px 24px 0 0}
 }
+
+/* =====================================================================
+   CONTINUIDADE — 2ª etapa (≤600px)
+   ===================================================================== */
+.c-dots{display:none}
+@media (max-width:600px){
+  /* cardápio: carrossel de arrastar, um produto por vez com o próximo aparecendo */
+  .p-track{display:flex!important;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+    margin-inline:calc(-1 * clamp(18px,4vw,40px));padding:6px clamp(18px,4vw,40px) 18px;scroll-padding-inline:clamp(18px,4vw,40px);
+    scrollbar-width:none;overscroll-behavior-x:contain;max-width:none}
+  .p-track::-webkit-scrollbar{display:none}
+  .p-track .card{flex:0 0 84%;scroll-snap-align:start}
+  .p-track .card:hover{transform:none}
+  .p-track .card-photo{aspect-ratio:1/.78}
+  .c-dots{display:flex;justify-content:center;gap:8px;margin-top:2px}
+  .c-dots i{width:8px;height:8px;border-radius:999px;background:rgba(200,134,74,.3);transition:width .3s var(--ease),background-color .3s}
+  .c-dots i.on{width:22px;background:var(--caramel)}
+  #cardapio .sec-head{margin-bottom:16px}
+  .tip{margin-top:22px}
+
+  /* história: capivara menor, texto em ritmo de leitura */
+  .about-art{max-width:210px}
+  .about-art .bubble{right:-26%;top:-2%}
+  .about-copy p{font-size:.95rem;line-height:1.62;margin-top:.8em}
+  .about-copy p:first-of-type{font-size:1.02rem;margin-top:1em}
+
+  /* momentos: linhas mais baixas */
+  .moment{padding:14px 16px;grid-template-columns:48px 1fr;row-gap:2px}
+  .m-ico{width:48px;height:48px;border-radius:15px}
+  .m-ico svg{width:32px;height:32px}
+  .moment h3{font-size:1.04rem}
+  .moment p{font-size:.84rem;line-height:1.45}
+  .moment .go{padding-top:2px;min-height:28px}
+
+  /* rodapé mais enxuto */
+  .footer{padding-top:40px}
+  .f-grid{gap:22px}
+  .f-links .f-title{margin-bottom:0}
+  .f-bottom{margin-top:24px;padding-top:16px}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
@@ -973,7 +1013,7 @@ html.lock,html.lock body{overflow:hidden}
       <p class="lead">3 sabores incríveis, todos irresistíveis!</p>
     </header>
 
-    <div class="grid-3">
+    <div class="grid-3 p-track" id="p-track">
       <article class="card rv">
         <span class="tag"><svg aria-hidden="true"><use href="#i-heart"/></svg>Mais pedido</span>
         <div class="card-photo" data-cookie="nutella" data-seed="23" data-bg="#F4E1D6,#D9AE95" role="img" aria-label="Cookie de Nutella com o recheio cremoso aparecendo no centro e escorrendo pela lateral"></div>
@@ -1017,6 +1057,8 @@ html.lock,html.lock body{overflow:hidden}
         </div>
       </article>
     </div>
+
+    <div class="c-dots" id="p-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
 
     <div class="tip rv">
       <span class="capy-mini"><svg viewBox="0 0 200 210" aria-hidden="true"><use href="#capy"/></svg></span>
@@ -1310,19 +1352,20 @@ if ('IntersectionObserver' in window) {
 
 
 
-/* ---------- pontinhos do carrossel de depoimentos (celular) ---------- */
-(() => {
-  const track = document.getElementById('t-track');
-  const dots = [...document.querySelectorAll('#t-dots i')];
+/* ---------- pontinhos dos carrosséis do celular (produtos e depoimentos) ---------- */
+[['p-track', 'p-dots'], ['t-track', 't-dots']].forEach(([trackId, dotsId]) => {
+  const track = document.getElementById(trackId);
+  const dots = [...document.querySelectorAll('#' + dotsId + ' i')];
   if (!track || !dots.length) return;
   const update = () => {
-    const cards = [...track.children];
+    const pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    const left = track.getBoundingClientRect().left + pad;
     let idx = 0, best = Infinity;
-    cards.forEach((c, i) => { const d = Math.abs(c.getBoundingClientRect().left - track.getBoundingClientRect().left - parseFloat(getComputedStyle(track).paddingLeft)); if (d < best) { best = d; idx = i; } });
+    [...track.children].forEach((c, i) => { const d = Math.abs(c.getBoundingClientRect().left - left); if (d < best) { best = d; idx = i; } });
     dots.forEach((d, i) => d.classList.toggle('on', i === idx));
   };
   track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
-})();
+});
 
 /* =========================================================
    Carrinho → conferir pedido → WhatsApp
