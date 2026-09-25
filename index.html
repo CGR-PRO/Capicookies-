@@ -244,7 +244,13 @@ input { font: inherit; }
   text-decoration: none;
   color: var(--choco);
 }
-.logo img { width: 36px; height: 36px; transition: transform .4s var(--ease); }
+.logo img {
+  width: auto;
+  height: 52px;
+  max-width: none;
+  object-fit: contain;
+  transition: transform .4s var(--ease);
+}
 .logo:hover img { transform: rotate(-10deg); }
 .logo-word {
   font-family: var(--f-display);
@@ -253,6 +259,7 @@ input { font: inherit; }
   letter-spacing: -0.03em;
 }
 .logo-light { color: var(--on-dark); }
+.logo-light img { height: 120px; }
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
 
@@ -1243,6 +1250,8 @@ input { font: inherit; }
 /* ---------- ≥ 960px (desktop) ---------- */
 @media (min-width: 960px) {
   :root { --header-h: 76px; }
+  .logo img { height: 64px; }
+  .logo-light img { height: 150px; }
 
   .menu-btn { display: none; }
   .main-nav {
@@ -1426,8 +1435,8 @@ input { font: inherit; }
   <header class="site-header" id="topo">
     <div class="wrap header-bar">
       <a class="logo" href="#inicio" aria-label="Capicookies, voltar ao início">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJDYXBpY29va2llcyI+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNDOThBM0UiLz4KICA8ZWxsaXBzZSBjeD0iMTgiIGN5PSIxNSIgcng9IjUiIHJ5PSI0LjUiIGZpbGw9IiM2RTQ1MjciLz4KICA8ZWxsaXBzZSBjeD0iNDQiIGN5PSIxNSIgcng9IjUiIHJ5PSI0LjUiIGZpbGw9IiM2RTQ1MjciLz4KICA8cmVjdCB4PSIxMCIgeT0iMTQiIHdpZHRoPSI0NCIgaGVpZ2h0PSIzOCIgcng9IjE4IiBmaWxsPSIjRkNGNUVBIi8+CiAgPHJlY3QgeD0iNyIgeT0iMzEiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMiIgcng9IjExIiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIyNiIgcj0iMi42IiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGNpcmNsZSBjeD0iNDIiIGN5PSIyNiIgcj0iMi42IiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGVsbGlwc2UgY3g9IjE2IiBjeT0iMzgiIHJ4PSIyLjQiIHJ5PSIxLjYiIGZpbGw9IiNGQ0Y1RUEiLz4KICA8ZWxsaXBzZSBjeD0iMjciIGN5PSIzOCIgcng9IjIuNCIgcnk9IjEuNiIgZmlsbD0iI0ZDRjVFQSIvPgogIDxlbGxpcHNlIGN4PSI0NSIgY3k9IjM0IiByeD0iNCIgcnk9IjIuNCIgZmlsbD0iI0VCQTU5NyIvPgo8L3N2Zz4K" alt="" width="36" height="36">
-        <span class="logo-word">capicookies</span>
+        <!-- LOGO: arquivo capi.png na mesma pasta deste index.html -->
+        <img class="logo-img" src="capi.png" alt="Capicookies" width="520" height="514">
       </a>
 
       <nav class="main-nav" id="main-nav" aria-label="Principal">
@@ -1697,8 +1706,7 @@ input { font: inherit; }
     <div class="wrap footer-grid">
       <div class="footer-brand">
         <a class="logo logo-light" href="#inicio">
-          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJDYXBpY29va2llcyI+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiNDOThBM0UiLz4KICA8ZWxsaXBzZSBjeD0iMTgiIGN5PSIxNSIgcng9IjUiIHJ5PSI0LjUiIGZpbGw9IiM2RTQ1MjciLz4KICA8ZWxsaXBzZSBjeD0iNDQiIGN5PSIxNSIgcng9IjUiIHJ5PSI0LjUiIGZpbGw9IiM2RTQ1MjciLz4KICA8cmVjdCB4PSIxMCIgeT0iMTQiIHdpZHRoPSI0NCIgaGVpZ2h0PSIzOCIgcng9IjE4IiBmaWxsPSIjRkNGNUVBIi8+CiAgPHJlY3QgeD0iNyIgeT0iMzEiIHdpZHRoPSIzNCIgaGVpZ2h0PSIyMiIgcng9IjExIiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIyNiIgcj0iMi42IiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGNpcmNsZSBjeD0iNDIiIGN5PSIyNiIgcj0iMi42IiBmaWxsPSIjM0IyMjE4Ii8+CiAgPGVsbGlwc2UgY3g9IjE2IiBjeT0iMzgiIHJ4PSIyLjQiIHJ5PSIxLjYiIGZpbGw9IiNGQ0Y1RUEiLz4KICA8ZWxsaXBzZSBjeD0iMjciIGN5PSIzOCIgcng9IjIuNCIgcnk9IjEuNiIgZmlsbD0iI0ZDRjVFQSIvPgogIDxlbGxpcHNlIGN4PSI0NSIgY3k9IjM0IiByeD0iNCIgcnk9IjIuNCIgZmlsbD0iI0VCQTU5NyIvPgo8L3N2Zz4K" alt="" width="40" height="40">
-          <span class="logo-word">capicookies</span>
+          <img class="logo-img" src="capi.png" alt="Capicookies" width="520" height="514" loading="lazy">
         </a>
         <p class="footer-tag">Mais que cookies, são momentos especiais.</p>
       </div>
