@@ -744,6 +744,72 @@ html.lock,html.lock body{overflow:hidden}
   .btn-xl{padding:0 16px;font-size:.84rem}
   .hero-notes li{font-size:.72rem}
 }
+
+/* =====================================================================
+   FLUXO CONTÍNUO NO CELULAR (≤600px)
+   Ritmo de espaços por seção, fundos que se fundem, seções escuras como
+   "folhas" arredondadas sobrepostas e um fio pontilhado caramelo que
+   conduz de uma seção para a próxima.
+   ===================================================================== */
+@media (max-width:600px){
+  /* ---- ritmo: cada seção com o espaço que o conteúdo pede ---- */
+  .hero{padding-bottom:30px}
+  #cardapio{padding-top:10px;padding-bottom:40px}
+  .artisan{padding-top:48px;padding-bottom:44px}
+  #sobre{padding-top:24px;padding-bottom:20px}
+  .moments{padding-top:18px;padding-bottom:58px}
+  .testi{padding-top:44px;padding-bottom:62px}
+  #pedir{padding-top:36px;padding-bottom:62px}
+  .sec-head{margin-bottom:22px}
+  .sec-head .lead{margin-top:.5rem}
+
+  /* ---- fio condutor: linha pontilhada + coração ligando as seções ---- */
+  #cardapio .sec-head::before,.moments .sec-head::before,#pedir .sec-head::before{
+    content:"";display:block;width:2px;height:30px;margin:0 auto 10px;
+    background:repeating-linear-gradient(180deg,var(--caramel) 0 4px,transparent 4px 9px);opacity:.55}
+  .hero-art::after{content:"";position:absolute;left:50%;bottom:-34px;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);
+    border-radius:2px;background:var(--rose);opacity:.55}
+
+  /* ---- creme → bege → creme sem corte ---- */
+  .artisan{background:linear-gradient(180deg,var(--cream) 0,var(--beige) 64px,var(--beige) calc(100% - 64px),var(--cream) 100%)}
+
+  /* ---- momentos → depoimentos: a folha marrom sobe sobre o creme ---- */
+  .moments{background:var(--cream)}
+  .testi{margin-top:-30px;border-radius:30px 30px 0 0;box-shadow:0 -14px 30px -24px rgba(59,36,24,.45)}
+
+  /* ---- depoimentos → como pedir: a folha creme sobe sobre o marrom ---- */
+  #pedir{margin-top:-30px;border-radius:30px 30px 0 0;background:var(--cream);z-index:1;box-shadow:0 -14px 30px -24px rgba(0,0,0,.35)}
+
+  /* ---- como pedir → rodapé: mesma folha arredondada ---- */
+  .footer{position:relative;z-index:2;margin-top:-30px;border-radius:30px 30px 0 0;padding-top:46px}
+
+  /* ---- menos caixas isoladas ---- */
+  .card{border-color:transparent;box-shadow:0 1px 2px rgba(59,36,24,.04),0 18px 34px -26px rgba(59,36,24,.35)}
+  .grid-3{gap:16px}
+
+  .process{gap:18px 14px}
+  .process li{background:none;border:0;padding:0}
+
+  /* momentos: uma lista agrupada, em vez de 4 caixas */
+  .grid-4{gap:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden;
+    box-shadow:0 18px 34px -30px rgba(59,36,24,.4)}
+  .moment{border:0;border-radius:0;background:transparent;box-shadow:none!important;transform:none!important}
+  .moment + .moment{border-top:1px dashed var(--line)}
+
+  /* como pedir: passos agrupados em um só cartão */
+  .steps{gap:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:4px 0;
+    box-shadow:0 18px 34px -30px rgba(59,36,24,.4)}
+  .step{border:0;border-radius:0;background:transparent;padding:14px 16px}
+  .step + .step{border-top:1px dashed var(--line)}
+  .step-ico{box-shadow:none;background:var(--cream)}
+
+  /* sobre: capivara e texto mais próximos, sem vazios */
+  .about-grid{gap:18px}
+  .about-copy .eyebrow{margin-top:4px}
+}
+@media (max-width:360px){
+  .testi,#pedir,.footer{border-radius:24px 24px 0 0}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
