@@ -850,6 +850,120 @@ html.lock,html.lock body{overflow:hidden}
   .f-links .f-title{margin-bottom:0}
   .f-bottom{margin-top:24px;padding-top:16px}
 }
+
+/* =====================================================================
+   COMPOSIÇÃO MOBILE CONTÍNUA (≤600px)
+   A página é um único percurso: um fio caramelo desce pela lateral do
+   cardápio até o pedido, com um marcador em cada capítulo. Títulos e
+   conteúdo se alinham a esse fio. Nada aqui vale acima de 600px.
+   ===================================================================== */
+@media (max-width:600px){
+  :root{--spine:21px;--indent:48px}
+
+  /* desfaz as "folhas" e o fio anterior: agora o fio é um só */
+  .testi,#pedir{margin-top:0!important;border-radius:0!important;box-shadow:none!important}
+  #cardapio .sec-head::before,.moments .sec-head::before,#pedir .sec-head::before{display:none}
+  .hero-art::after{display:none}
+
+  /* ---------- o fio ---------- */
+  #cardapio,.artisan,#sobre,.moments,.testi,#pedir{position:relative}
+  #cardapio::after,.artisan::after,#sobre::after,.moments::after,.testi::after,#pedir::after{
+    content:"";position:absolute;left:var(--spine);top:0;bottom:0;width:2px;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(180deg,rgba(200,134,74,.55) 0 5px,transparent 5px 11px)}
+  .testi::after{background:repeating-linear-gradient(180deg,rgba(231,183,131,.4) 0 5px,transparent 5px 11px)}
+  #cardapio::after{top:8px;background:
+    radial-gradient(circle,var(--rose) 0 4px,transparent 4.5px) 50% 0/10px 10px no-repeat,
+    repeating-linear-gradient(180deg,rgba(200,134,74,.55) 0 5px,transparent 5px 11px) 0 14px/2px 100% no-repeat}
+  #pedir::after{bottom:auto;height:calc(100% - 120px)}
+
+  /* conteúdo alinhado ao fio */
+  #cardapio > .wrap,.artisan > .wrap,#sobre > .wrap,.moments > .wrap,.testi > .wrap,#pedir > .wrap{
+    padding-left:var(--indent);padding-right:18px;position:relative;z-index:1}
+
+  /* ---------- títulos de capítulo: à esquerda, com marcador no fio ---------- */
+  .sec-head{align-items:flex-start;text-align:left;margin-bottom:18px}
+  .sec-head .lead{margin-inline:0}
+  .eyebrow{position:relative}
+  #cardapio .eyebrow svg,.artisan .eyebrow svg,#sobre .eyebrow svg,.moments .eyebrow svg,.testi .eyebrow svg,#pedir .eyebrow svg{
+    position:absolute;left:calc(var(--spine) - var(--indent) - 12px);top:50%;transform:translateY(-50%);
+    width:26px;height:26px;padding:5px;border-radius:50%;background:var(--cream);box-shadow:0 0 0 1.5px rgba(200,134,74,.45);color:var(--rose)}
+  .artisan .eyebrow svg{background:var(--beige)}
+  .testi .eyebrow svg{background:var(--choco);box-shadow:0 0 0 1.5px rgba(231,183,131,.5);color:#E7B783}
+  .h2{font-size:clamp(1.7rem,7.6vw,2.05rem);text-wrap:balance}
+  .demo-note{align-self:stretch;text-align:left}
+
+  /* ---------- hero → cardápio: o fio nasce embaixo do cookie ---------- */
+  .hero{padding-bottom:18px}
+  #cardapio{padding-top:26px;padding-bottom:30px}
+
+  /* carrosséis começam na linha do texto e correm até a borda */
+  .p-track,.t-track{margin-left:calc(-1 * var(--indent));margin-right:-18px;padding-left:var(--indent);padding-right:18px;
+    scroll-padding-left:var(--indent);scroll-padding-right:18px}
+  .p-track .card,.t-track .t-card{flex:0 0 calc(100% - var(--indent) - 34px)}
+  .c-dots,.t-dots{justify-content:flex-start}
+
+  /* dica da capivara: ponte entre cardápio e processo, sem caixa */
+  .tip{background:none;padding:0;margin-top:22px;max-width:none}
+  .tip .capy-mini{background:var(--beige)}
+
+  /* ---------- cardápio → artesanal: o bege chega aos poucos ---------- */
+  .artisan{padding-top:36px;padding-bottom:40px;
+    background:linear-gradient(180deg,var(--cream) 0,var(--beige) 90px,var(--beige) calc(100% - 110px),var(--cream) 100%)}
+  .artisan-grid{gap:22px}
+  .scene{box-shadow:0 20px 40px -32px rgba(59,36,24,.6)}
+  .process{gap:16px 14px;margin-top:20px}
+
+  /* ---------- artesanal → história: a capivara sobe para o fim do bege ---------- */
+  #sobre{padding-top:0;padding-bottom:18px}
+  .about-grid{gap:14px}
+  .about-art{max-width:200px;margin:-34px 0 0 auto;margin-right:6%}
+  .about-blob{background:radial-gradient(circle at 40% 35%,#FBE9E1,var(--rose-soft) 60%,rgba(246,224,214,0) 72%)}
+  .about-art .bubble{right:auto;left:-62%;top:18%;transform:rotate(-3deg);border-radius:18px 18px 6px 18px}
+
+  /* ---------- história → momentos: mesma superfície, só uma lista ---------- */
+  .moments{padding-top:30px;padding-bottom:70px;background:linear-gradient(180deg,var(--cream) 0,#F9EDE6 100%)}
+  .grid-4{background:none;border:0;box-shadow:none;border-radius:0;gap:6px;overflow:visible}
+  .moment{padding:12px 0;grid-template-columns:52px 1fr}
+  .moment + .moment{border-top:1px dashed rgba(200,134,74,.35)}
+  .m-ico{width:52px;height:52px;background:var(--paper)!important;box-shadow:0 0 0 1px var(--line)}
+
+  /* ---------- momentos → depoimentos: curva de chocolate ---------- */
+  .testi{overflow:visible;padding-top:34px;padding-bottom:48px}
+  .testi::before{content:"";position:absolute;left:0;right:0;top:-28px;height:30px;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20390%2030%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%2030V16C60%202%20130%200%20195%208S330%2026%20390%2012V30Z%27%20fill%3D%27%233B2418%27/%3E%3C/svg%3E") center/100% 100% no-repeat}
+
+  /* ---------- depoimentos → pedido: o chocolate escorre ---------- */
+  #pedir::before{content:"";position:absolute;left:0;right:0;top:-1px;height:clamp(34px,10vw,44px);pointer-events:none;z-index:2;
+    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20390%2040%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M0%200H390V10H363.0%20Q359.0%2010%20359.0%2014%20V19.0%20A7.0%207.0%200%200%201%20345.0%2019.0%20V14%20Q345.0%2010%20341.0%2010H309.0%20Q305.0%2010%20305.0%2014%20V9.0%20A5.0%205.0%200%200%201%20295.0%209.0%20V14%20Q295.0%2010%20291.0%2010H248.0%20Q244.0%2010%20244.0%2014%20V26.0%20A8.0%208.0%200%200%201%20228.0%2026.0%20V14%20Q228.0%2010%20224.0%2010H193.5%20Q189.5%2010%20189.5%2014%20V12.5%20A5.5%205.5%200%200%201%20178.5%2012.5%20V14%20Q178.5%2010%20174.5%2010H131.0%20Q127.0%2010%20127.0%2014%20V21.0%20A7.0%207.0%200%200%201%20113.0%2021.0%20V14%20Q113.0%2010%20109.0%2010H75.0%20Q71.0%2010%2071.0%2014%20V11.0%20A5.0%205.0%200%200%201%2061.0%2011.0%20V14%20Q61.0%2010%2057.0%2010H38.5%20Q34.5%2010%2034.5%2014%20V15.5%20A6.5%206.5%200%200%201%2021.5%2015.5%20V14%20Q21.5%2010%2017.5%2010H0Z%27%20fill%3D%27%233B2418%27/%3E%3C/svg%3E") top/100% 100% no-repeat}
+  #pedir{padding-top:62px;padding-bottom:54px}
+
+  /* passos do pedido sobre o fio */
+  .steps{background:none;border:0;box-shadow:none;border-radius:0;padding:0;gap:4px;max-width:none}
+  .step{position:relative;padding:12px 0;grid-template-columns:56px 1fr}
+  .step + .step{border-top:0}
+  .step-ico{width:56px;height:56px;background:var(--paper);box-shadow:0 0 0 1px var(--line)}
+  .step-ico svg{width:32px;height:32px}
+  .step-num{position:absolute;top:50%;left:calc(var(--spine) - var(--indent) - 14px);right:auto;transform:translateY(-50%);
+    width:30px;height:30px;box-shadow:0 0 0 4px var(--cream)}
+  .order-cta{align-items:stretch;margin-top:22px}
+  .order-cta .btn{width:100%}
+  .order-cta small{text-align:left}
+
+  /* ---------- pedido → rodapé: o fio termina num coração e o rodapé sobe ---------- */
+  #pedir .order-cta::before{content:"";position:absolute;left:calc(var(--spine) - var(--indent) - 6px);top:-14px;width:14px;height:14px;
+    background:var(--rose);opacity:.7;-webkit-mask:var(--heart) center/contain no-repeat;mask:var(--heart) center/contain no-repeat}
+  #pedir .order-cta{position:relative;--heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20.5s-8.2-5-8.2-11a4.6 4.6 0 0 1 8.2-2.9 4.6 4.6 0 0 1 8.2 2.9c0 6-8.2 11-8.2 11z'/%3E%3C/svg%3E")}
+}
+@media (max-width:360px){
+  :root{--indent:44px}
+  .p-track .card,.t-track .t-card{flex-basis:calc(100% - var(--indent) - 24px)}
+  .about-art .bubble{left:-48%}
+}
+
+@media (max-width:340px){
+  .about-art{max-width:180px}
+  .about-art .bubble{left:-34%;font-size:.66rem}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
