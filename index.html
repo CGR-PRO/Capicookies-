@@ -469,6 +469,156 @@ html.lock,html.lock body{overflow:hidden}
   .opts.three .opt b{font-size:.88rem}
   .row-2{grid-template-columns:1fr}
 }
+
+/* =====================================================================
+   OTIMIZAÇÃO MOBILE — tudo abaixo vale só para telas menores.
+   Nada aqui altera o desktop (≥1180px).
+   ===================================================================== */
+@media (max-width:1180px) and (min-width:1021px){
+  .note{right:0;top:30%}
+}
+@media (max-width:600px){
+  /* ritmo geral mais compacto */
+  .section{padding-block:clamp(52px,14vw,64px)}
+  .sec-head{margin-bottom:28px}
+  .h2{font-size:clamp(1.8rem,8.4vw,2.2rem);margin-top:.25em}
+  .lead{margin-top:.7rem;font-size:1rem}
+  .eyebrow{font-size:.92rem}
+
+  /* header */
+  .nav{gap:10px}
+  .logo{gap:8px;min-width:0}
+  .wordmark{font-size:1.22rem}
+
+  /* hero */
+  .hero{padding-top:calc(var(--hh) + 18px);padding-bottom:44px}
+  .hero-grid{gap:30px}
+  .hero h1{font-size:clamp(2.35rem,11vw,2.9rem);margin-top:16px;line-height:1.04}
+  .hero h1 .s{font-size:.72em;line-height:1.45}
+  .hero .lead{max-width:none}
+  .hero-ctas{margin-top:24px;gap:10px}
+  .hero-ctas .btn{min-height:54px}
+  .hero-notes{margin-top:20px;gap:8px 18px;font-size:.84rem}
+  .hero-art{max-width:min(100%,360px);margin-top:4px}
+  .hero-capy{width:34%;min-width:0;left:-3%;bottom:-6%}
+  .bubble{font-size:.68rem;padding:7px 11px 9px;max-width:10.5em}
+  .badge{width:24%;min-width:0;top:-1%;right:-2%}
+
+  /* produtos */
+  .grid-3{gap:18px}
+  .card-photo{aspect-ratio:4/3}
+  .card-body{padding:18px 20px 20px;gap:8px}
+  .card h3{font-size:1.55rem}
+  .card p{font-size:.95rem}
+  .card-foot{padding-top:14px;gap:12px}
+  .card-foot .btn{min-height:50px}
+  .tag{top:12px;left:12px}
+  .tip{margin-top:28px;padding:12px 16px 12px 12px;gap:12px}
+  .tip .capy-mini{width:52px;height:52px}
+  .tip p{font-size:.9rem}
+
+  /* artesanal */
+  .artisan-grid{gap:30px}
+  .scene{aspect-ratio:5/4}
+  .scene-label{font-size:.74rem;padding:6px 10px 8px}
+  .process{gap:18px;margin-top:24px}
+  .process .ico{width:48px;height:48px;border-radius:14px}
+  .process .ico svg{width:30px;height:30px}
+
+  /* sobre */
+  .about-grid{gap:34px}
+  .about-art{max-width:300px}
+  .about-art .bubble{right:-2%;top:2%;font-size:.74rem;max-width:10em}
+  .about-copy p:first-of-type{margin-top:1.1em;font-size:1.02rem}
+  .about-copy p{margin-top:.85em;font-size:.97rem}
+  .sign{margin-top:20px}
+
+  /* escolha seu momento: uma coluna, ilustração ao lado do texto */
+  .grid-4{grid-template-columns:1fr;gap:12px}
+  .moment{display:grid;grid-template-columns:64px 1fr;grid-template-areas:"ico title" "ico text" "ico go";column-gap:16px;row-gap:4px;padding:18px 18px 16px;align-items:start}
+  .m-ico{grid-area:ico;width:64px;height:64px;border-radius:20px;margin:0}
+  .m-ico svg{width:42px;height:42px}
+  .moment h3{grid-area:title;font-size:1.15rem}
+  .moment p{grid-area:text;font-size:.9rem}
+  .moment .go{grid-area:go;padding-top:6px;min-height:32px;align-items:center}
+
+  /* depoimentos */
+  .testi .grid-3{gap:14px}
+  .t-card{padding:24px 22px 20px;gap:12px}
+  .t-card blockquote{font-size:.97rem}
+  .demo-note{text-align:center;line-height:1.5;border-radius:14px}
+
+  /* como pedir: passos em lista compacta */
+  .steps{gap:14px;max-width:440px}
+  .step{display:grid;grid-template-columns:72px 1fr;grid-template-areas:"ico title" "ico text";column-gap:16px;row-gap:2px;text-align:left;align-items:center;
+    background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px 16px}
+  .step-ico{grid-area:ico;width:72px;height:72px;margin:0;box-shadow:inset 0 0 0 1px var(--line)}
+  .step-ico svg{width:40px;height:40px}
+  .step-num{width:28px;height:28px;font-size:.7rem;top:-6px;right:-8px}
+  .step h3{grid-area:title;font-size:1.12rem;align-self:end}
+  .step p{grid-area:text;font-size:.9rem;max-width:none;align-self:start}
+  .order-cta{margin-top:28px}
+  .order-cta small{text-align:center}
+
+  /* rodapé compacto e centralizado */
+  .footer{padding-block:48px 24px;text-align:center}
+  .f-grid{gap:30px;justify-items:center}
+  .f-brand{display:flex;flex-direction:column;align-items:center}
+  .f-tag{margin-top:12px;max-width:none}
+  .f-links{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 6px}
+  .f-links .f-title{flex-basis:100%;margin-bottom:6px}
+  .f-links br{display:none}
+  .f-links a{padding:10px 10px;min-height:44px;display:inline-flex;align-items:center}
+  .socials{justify-content:center}
+  .f-bottom{margin-top:32px;justify-content:center;text-align:center;flex-direction:column;gap:6px}
+
+  /* botões e toque */
+  .btn{min-height:52px}
+  .btn-xl{min-height:60px}
+
+  /* carrinho no celular */
+  .drawer{width:100%}
+  .qty button{width:40px;height:40px}
+  .l-remove{width:42px;height:42px}
+  .line{grid-template-columns:56px 1fr auto;gap:4px 12px}
+  .l-thumb{width:56px;height:56px}
+  .opt span{padding:14px 12px;min-height:56px}
+  .opts.three .opt span{min-height:52px}
+  .field input,.field select{min-height:52px;font-size:16px}
+  .d-actions .btn{min-height:54px}
+}
+/* telas bem pequenas (iPhone SE, Android compacto) */
+@media (max-width:380px){
+  .nav{gap:6px}
+  .nav-right{gap:6px}
+  .logo-mark{width:38px;height:38px}
+  .logo-mark svg{width:33px;height:33px}
+  .wordmark{font-size:1.08rem}
+  .cart-btn,.nav-mobile .icon-btn{width:40px;height:40px}
+  .nav-mobile{gap:6px}
+  .icon-btn.wa svg{width:20px;height:20px}
+  .hero h1{font-size:2.2rem}
+  .hero-notes li{font-size:.8rem}
+  .opts{gap:8px}
+  .opt small{font-size:.74rem}
+  .row-uf{grid-template-columns:1fr 84px}
+  .cart-bar{left:12px;right:86px;gap:8px;padding:0 14px 0 8px;font-size:.86rem}
+  .fab{right:12px}
+  .toast{font-size:.86rem}
+}
+
+/* menu hambúrguer (só aparece até 1020px): linhas centralizadas para o X fechar certo */
+@media (max-width:1020px){
+  .burger{display:flex;flex-direction:column;align-items:center;justify-content:center}
+}
+@media (max-width:380px){
+  .fab{width:54px;height:54px}
+  .fab svg{width:24px;height:24px}
+  .cart-bar{right:74px;height:54px;padding:0 12px 0 6px;font-size:.84rem}
+  .cart-bar .cb-icon{width:40px;height:40px}
+  .cart-bar .cb-icon svg{width:20px;height:20px}
+  body.has-cart-bar .footer{padding-bottom:calc(24px + 88px + env(safe-area-inset-bottom,0px))}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
@@ -901,7 +1051,7 @@ html.lock,html.lock body{overflow:hidden}
 /* ============ CONFIGURAÇÃO ============
    Número do WhatsApp da loja: DDI 55 + DDD + número, só dígitos.
    É o ÚNICO lugar para trocar: todos os botões usam este valor. */
-const WHATSAPP_NUMBER = "5511978947920";
+const WHATSAPP_NUMBER = "5511900000000";
 
 const MSG_SIMPLES = 'Olá! Vim pelo site da Capicookies e gostaria de fazer um pedido. 🍪';
 const PRODUTOS = {
