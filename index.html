@@ -619,6 +619,131 @@ html.lock,html.lock body{overflow:hidden}
   .cart-bar .cb-icon svg{width:20px;height:20px}
   body.has-cart-bar .footer{padding-bottom:calc(24px + 88px + env(safe-area-inset-bottom,0px))}
 }
+
+/* =====================================================================
+   LAYOUT MOBILE (≤600px) — reorganização pensada para o celular.
+   Nenhuma regra aqui vale acima de 600px.
+   ===================================================================== */
+.t-dots{display:none}
+@media (max-width:600px){
+  /* header: logo + carrinho + menu. O WhatsApp fica no botão flutuante e no menu. */
+  .nav-mobile .icon-btn.wa{display:none}
+  .nav-right{gap:8px}
+
+  /* botão flutuante menor e o rodapé com folga para ele */
+  .fab{width:52px;height:52px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .fab svg{width:24px;height:24px}
+  .cart-bar{left:14px;right:76px;bottom:calc(14px + env(safe-area-inset-bottom,0px));height:52px}
+  .cart-bar .cb-icon{width:38px;height:38px}
+  .footer{padding-bottom:calc(24px + 72px + env(safe-area-inset-bottom,0px))}
+  body.has-cart-bar .footer{padding-bottom:calc(24px + 72px + env(safe-area-inset-bottom,0px))}
+
+  /* hero: proposta + ações no primeiro olhar, cookie logo abaixo */
+  .hero{padding-top:calc(var(--hh) + 14px);padding-bottom:40px}
+  .hero-grid{gap:22px}
+  .pill{font-size:.76rem;padding:6px 12px 6px 6px}
+  .pill i{width:22px;height:22px}
+  .hero h1{margin-top:14px}
+  .hero .lead{margin-top:12px}
+  .hero-ctas{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hero-ctas .btn{padding:0 12px;font-size:.8rem;letter-spacing:.07em;min-height:52px}
+  .hero-notes{margin-top:16px;gap:6px}
+  .hero-notes li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 7px;font-size:.74rem;gap:4px;line-height:1.5}
+  .hero-notes svg{width:13px;height:13px}
+  .hero-art{max-width:300px}
+  .hero-art .dd{display:none}
+
+  /* produtos: foto um pouco mais baixa, preço e botão lado a lado */
+  .card-photo{aspect-ratio:10/7}
+  .card-kicker{font-size:.76rem}
+  .card-body{padding:16px 18px 18px;gap:6px}
+  .card-foot{flex-wrap:nowrap;padding-top:12px;margin-top:6px}
+  .card-foot .btn{flex:0 0 auto;padding:0 18px}
+  .price{font-size:1.4rem}
+  .in-cart{min-height:0}
+  .in-cart:empty{display:none}
+
+  /* artesanal: cena menor, passos em grade 2×2 com ícone em cima */
+  .scene{aspect-ratio:4/3}
+  .process{grid-template-columns:1fr 1fr;gap:12px}
+  .process li{display:flex;flex-direction:column;gap:6px;background:rgba(255,253,249,.7);border:1px solid var(--line);border-radius:16px;padding:14px 12px}
+  .process .ico{width:40px;height:40px;border-radius:12px}
+  .process .ico svg{width:26px;height:26px}
+  .process h3{font-size:.9rem;flex-direction:column;gap:0}
+  .process h3 em{font-size:.72rem}
+  .process p{font-size:.82rem;line-height:1.45}
+
+  /* sobre: capivara compacta, texto logo abaixo */
+  .about-grid{gap:26px}
+  .about-art{max-width:250px}
+  .about-blob{aspect-ratio:1/.92;padding-top:8%}
+  .about-art .bubble{top:-4%;right:-14%}
+  .about-art .dd{display:none}
+
+  /* escolha seu momento: cards baixos, ilustração à esquerda */
+  .moment{padding:16px;grid-template-columns:56px 1fr;column-gap:14px}
+  .m-ico{width:56px;height:56px;border-radius:18px}
+  .m-ico svg{width:38px;height:38px}
+  .moment h3{font-size:1.08rem}
+  .moment p{font-size:.86rem}
+  .moment .go{font-size:.74rem;padding-top:4px}
+
+  /* depoimentos: carrossel de arrastar com um card por vez */
+  .testi > .dd{display:none}
+  .t-track{display:flex!important;grid-template-columns:none;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+    margin-inline:calc(-1 * clamp(18px,4vw,40px));padding:4px clamp(18px,4vw,40px) 8px;scroll-padding-inline:clamp(18px,4vw,40px);
+    scrollbar-width:none;overscroll-behavior-x:contain}
+  .t-track::-webkit-scrollbar{display:none}
+  .t-track .t-card{flex:0 0 86%;scroll-snap-align:start;transform:none!important}
+  .t-dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+  .t-dots i{width:8px;height:8px;border-radius:999px;background:rgba(231,183,131,.35);transition:width .3s var(--ease),background-color .3s}
+  .t-dots i.on{width:22px;background:#E7B783}
+
+  /* como pedir */
+  .steps{gap:10px}
+  .step{padding:12px 14px;grid-template-columns:60px 1fr;column-gap:14px}
+  .step-ico{width:60px;height:60px}
+  .step-ico svg{width:34px;height:34px}
+  .step h3{font-size:1.05rem}
+  .step p{font-size:.86rem}
+
+  /* carrinho: rodapé compacto para sobrar espaço para os produtos e o formulário */
+  .d-head{padding:14px 16px 12px}
+  .d-head h2{font-size:1.45rem}
+  .d-foot{gap:8px;padding-top:12px}
+  .d-row.sub{font-size:.86rem}
+  .d-row.total{padding-top:4px}
+  .d-row.total b{font-size:1.35rem}
+  .d-actions{gap:8px}
+  .d-actions .btn-line{min-height:46px}
+  .d-note{margin-top:14px;font-size:.82rem}
+  .ck{gap:20px}
+  .fields{gap:12px}
+  .addr{padding:14px}
+  .row-2{grid-template-columns:1fr}
+  .row-uf{grid-template-columns:1fr 92px}
+}
+@media (max-width:360px){
+  .hero-ctas{grid-template-columns:1fr}
+  .process{grid-template-columns:1fr}
+  .process li{display:grid;grid-template-columns:auto 1fr;gap:2px 12px}
+  .process .ico{grid-row:span 2}
+  .card-foot{flex-wrap:wrap}
+  .card-foot .btn{flex:1 1 100%}
+  .about-art .bubble{right:-6%}
+  .cart-bar{right:72px;left:12px}
+  .fab{right:12px}
+}
+
+@media (max-width:600px){
+  .order-cta small b,.f-phone b{white-space:nowrap}
+}
+@media (max-width:360px){
+  .h2{font-size:1.62rem}
+  .pill{font-size:.7rem}
+  .btn-xl{padding:0 16px;font-size:.84rem}
+  .hero-notes li{font-size:.72rem}
+}
 </style>
 
 <!-- ===== SVG sprite: mascote, ícones e rabiscos (desenhados para a Capicookies) ===== -->
@@ -944,7 +1069,7 @@ html.lock,html.lock body{overflow:hidden}
       <h2 class="h2" id="t-depo">Quem prova, <span class="s" style="color:#E7B783">volta!</span></h2>
       <span class="demo-note">Depoimentos de exemplo · troque pelas avaliações reais dos clientes</span>
     </header>
-    <div class="grid-3">
+    <div class="grid-3 t-track" id="t-track">
       <figure class="t-card rv">
         <span class="qmark" aria-hidden="true">“</span>
         <div class="stars" aria-label="5 de 5 estrelas"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
@@ -964,6 +1089,7 @@ html.lock,html.lock body{overflow:hidden}
         <figcaption class="who"><span class="avatar" style="background:#B8793F">B</span><span><b>Beatriz</b><span>pediu Kinder Bueno</span></span></figcaption>
       </figure>
     </div>
+    <div class="t-dots" id="t-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -1051,7 +1177,7 @@ html.lock,html.lock body{overflow:hidden}
 /* ============ CONFIGURAÇÃO ============
    Número do WhatsApp da loja: DDI 55 + DDD + número, só dígitos.
    É o ÚNICO lugar para trocar: todos os botões usam este valor. */
-const WHATSAPP_NUMBER = "5511978947920";
+const WHATSAPP_NUMBER = "5511900000000";
 
 const MSG_SIMPLES = 'Olá! Vim pelo site da Capicookies e gostaria de fazer um pedido. 🍪';
 const PRODUTOS = {
@@ -1116,6 +1242,21 @@ if ('IntersectionObserver' in window) {
   });
 }
 
+
+
+/* ---------- pontinhos do carrossel de depoimentos (celular) ---------- */
+(() => {
+  const track = document.getElementById('t-track');
+  const dots = [...document.querySelectorAll('#t-dots i')];
+  if (!track || !dots.length) return;
+  const update = () => {
+    const cards = [...track.children];
+    let idx = 0, best = Infinity;
+    cards.forEach((c, i) => { const d = Math.abs(c.getBoundingClientRect().left - track.getBoundingClientRect().left - parseFloat(getComputedStyle(track).paddingLeft)); if (d < best) { best = d; idx = i; } });
+    dots.forEach((d, i) => d.classList.toggle('on', i === idx));
+  };
+  track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+})();
 
 /* =========================================================
    Carrinho → conferir pedido → WhatsApp
